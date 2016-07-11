@@ -5,7 +5,7 @@ from collections import namedtuple, MutableMapping
 import errno
 import os
 import pickle
-from shutil import rmtree, copyfile, copytree
+from shutil import rmtree, copyfile, copytree, move
 from tempfile import mkdtemp, NamedTemporaryFile
 
 import pandas as pd
