@@ -239,16 +239,30 @@ class PerformanceTracker(object):
 
         return _dict
 
-    def process_capital_changes(self, capital_change, is_interday):
-        self.cumulative_performance.subdivide_period(capital_change)
+    def process_capital_changes(self, capital_change, dt, is_interday):
+        if 'target' in capital_change:
+            log.info('Processing capital change to target %s at %s'
+                     % (capital_change['target'], dt))
+            capital_change_amount = capital_change['target'] - \
+                self.cumulative_performance.as_portfolio().portfolio_value
+        elif 'delta' in capital_change:
+            log.info('Processing capital change of delta %s at %s'
+                     % (capital_change['delta'], dt))
+            capital_change_amount = capital_change['delta']
+        else:
+            log.error("Capital change %s does not indicate a 'target' nor a "
+                      "'delta'" % capital_change)
+            return
+
+        self.cumulative_performance.subdivide_period(capital_change_amount)
 
         if is_interday:
             # Change comes between days
             self.todays_performance.adjust_period_starting_capital(
-                capital_change)
+                capital_change_amount)
         else:
             # Change comes in the middle of day
-            self.todays_performance.subdivide_period(capital_change)
+            self.todays_performance.subdivide_period(capital_change_amount)
 
     def process_transaction(self, transaction):
         self.txn_count += 1
