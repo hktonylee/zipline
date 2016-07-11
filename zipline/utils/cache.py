@@ -303,7 +303,7 @@ class working_file(object):
             self._commit()
         else:
             self._tmpfile.__exit__(*exc_info)
-            os.unlink(self._tmpfile)
+            os.unlink(self._tmpfile.name)
 
 
 class working_dir(object):
