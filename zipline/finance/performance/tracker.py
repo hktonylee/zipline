@@ -240,18 +240,19 @@ class PerformanceTracker(object):
         return _dict
 
     def process_capital_changes(self, capital_change, dt, is_interday):
-        if 'target' in capital_change:
-            log.info('Processing capital change to target %s at %s'
-                     % (capital_change['target'], dt))
-            capital_change_amount = capital_change['target'] - \
+        if capital_change['type'] == 'target':
+            capital_change_amount = capital_change['value'] - \
                 self.cumulative_performance.as_portfolio().portfolio_value
-        elif 'delta' in capital_change:
-            log.info('Processing capital change of delta %s at %s'
-                     % (capital_change['delta'], dt))
+            log.info('Processing capital change to target %s at %s. Capital '
+                     'change delta is %s' % (capital_change['value'], dt,
+                                             capital_change_amount))
+        elif capital_change['type'] == 'delta':
             capital_change_amount = capital_change['delta']
+            log.info('Processing capital change of delta %s at %s'
+                     % (capital_change_amount, dt))
         else:
-            log.error("Capital change %s does not indicate a 'target' nor a "
-                      "'delta'" % capital_change)
+            log.error("Capital change %s does not indicate a valid type "
+                      "('target' or 'delta')" % capital_change)
             return
 
         self.cumulative_performance.subdivide_period(capital_change_amount)
