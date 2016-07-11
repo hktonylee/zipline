@@ -14,6 +14,12 @@
 # limitations under the License.
 
 from .trading_calendar import TradingCalendar
-from .calendar_utils import get_calendar
+from .calendar_utils import (
+    get_calendar,
+    register_calendar,
+    deregister_calendar,
+    clear_calendars
+)
 
-__all__ = ['get_calendar', 'TradingCalendar']
+__all__ = ['get_calendar', 'TradingCalendar', 'register_calendar',
+           'deregister_calendar', 'clear_calendars']
