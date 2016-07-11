@@ -289,7 +289,7 @@ class working_file(object):
         """Sync the temporary file to the final path.
         """
         self._tmpfile.close()
-        copyfile(self.name, self._final_path)
+        move(self.name, self._final_path)
 
     def __getattr__(self, attr):
         return getattr(self._tmpfile, attr)
@@ -301,9 +301,9 @@ class working_file(object):
     def __exit__(self, *exc_info):
         if exc_info[0] is None:
             self._commit()
-        self._tmpfile.__exit__(*exc_info)
-        self._tmpfile.close()
-        os.unlink(self._tmpfile)
+        else:
+            self._tmpfile.__exit__(*exc_info)
+            os.unlink(self._tmpfile)
 
 
 class working_dir(object):
