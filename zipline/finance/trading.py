@@ -198,6 +198,10 @@ class SimulationParameters(object):
     def arena(self):
         return self._arena
 
+    @arena.setter
+    def arena(self, val):
+        self._arena = val
+
     @property
     def start_session(self):
         return self._start_session
