@@ -5,7 +5,7 @@ from collections import namedtuple, MutableMapping
 import errno
 import os
 import pickle
-from shutil import rmtree, copyfile, copytree, move
+from shutil import rmtree, copytree, move
 from tempfile import mkdtemp, NamedTemporaryFile
 from time import sleep
 
