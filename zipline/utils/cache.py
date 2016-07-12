@@ -7,6 +7,7 @@ import os
 import pickle
 from shutil import rmtree, copyfile, copytree, move
 from tempfile import mkdtemp, NamedTemporaryFile
+from time import sleep
 
 import pandas as pd
 
@@ -289,6 +290,7 @@ class working_file(object):
         """Sync the temporary file to the final path.
         """
         self._tmpfile.close()
+        sleep(0.1)
         move(self.name, self._final_path)
 
     def __getattr__(self, attr):
@@ -303,6 +305,7 @@ class working_file(object):
             self._commit()
         else:
             self._tmpfile.__exit__(*exc_info)
+            sleep(0.1)
             os.unlink(self._tmpfile.name)
 
 
