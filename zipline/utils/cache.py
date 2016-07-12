@@ -289,7 +289,6 @@ class working_file(object):
     def _commit(self):
         """Sync the temporary file to the final path.
         """
-        os.close(self._tmpfile.fileno())
         sleep(0.1)
         move(self.name, self._final_path)
 
@@ -304,9 +303,8 @@ class working_file(object):
         if exc_info[0] is None:
             self._commit()
         else:
-            os.close(self._tmpfile.fileno())
             sleep(0.1)
-            os.unlink(self._tmpfile.name)
+            os.unlink(self.path)
 
 
 class working_dir(object):
