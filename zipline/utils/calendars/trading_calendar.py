@@ -583,14 +583,17 @@ class TradingCalendar(with_metaclass(ABCMeta)):
         idx = 0
         for day_idx, size in enumerate(daily_sizes):
             # lots of small allocations, but it's fast enough for now.
-            all_minutes[idx:(idx + size)] = \
+
+            # size is a np.timedelta64, so we need to int it
+            size_int = int(size)
+            all_minutes[idx:(idx + size_int)] = \
                 np.arange(
                     opens_in_ns[day_idx],
                     closes_in_ns[day_idx] + NANOS_IN_MINUTE,
                     NANOS_IN_MINUTE
                 )
 
-            idx += size
+            idx += size_int
 
         return DatetimeIndex(all_minutes).tz_localize("UTC")
 
